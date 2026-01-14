@@ -1,5 +1,5 @@
 #set page(margin: (top: 0.5cm, bottom: 2cm, left: 0.5cm, right: 1cm))
-#set text(font: ("Noto Sans", "DejaVu Sans"), 8pt)
+#set text(font: "DejaVu Sans", 8pt)
 
 #let big_bullets = false
 #let bullets = true
