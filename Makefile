@@ -2,7 +2,7 @@
 
 website:
 	ls
-	typst c resume.typ --format html --features html
+	typst c resume.typ
 	ls
-	mv resume.html docs/index.html
+	mv resume.pdf docs/index.pdf
 	ls
