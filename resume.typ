@@ -1,10 +1,10 @@
 #set page(margin: (top: 0.5cm, bottom: 2cm, left: 0.5cm, right: 1cm))
-#set text(font: "DejaVu Sans", 8pt)
+#set text(font: "DejaVu Sans", 7.8pt)
 
 #let big_bullets = false
 #let bullets = true
 #let lines = false
-#let left_titles = true
+#let left_titles = false
 #let date_parens = false
 
 #let _date(_content) = {
