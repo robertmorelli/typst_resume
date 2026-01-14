@@ -357,7 +357,7 @@
           _link(
             [Automated resume],
             [typst],
-            "https://robertmorelli.github.io/typst_resume/",
+            "https://robertmorelli.github.io/resume/",
             [2025]
           ),
           (
@@ -442,15 +442,6 @@
           ),
           (),
         ),
-        // _item(
-        //   _link(
-        //     [\#1 Ranked U of U Among U of U affiliated teams at ICPC North America Qualifier],
-        //     [ICPC],
-        //     "https://naq25.kattis.com/contests/naq25/standings/affiliation/University%20of%20Utah",
-        //     [2025]
-        //   ),
-        //   (),
-        // ),
         _item(
           _nolink(
             [Jane Street Leaderboard],
