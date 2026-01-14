@@ -38,13 +38,15 @@
 }
 
 #let _link(_content, _subcontent, _url, _time) = {
-  link(_url)[
-    #text(_link_color)[
-      *#_content*
-      #emph(_subcontent)
-      #if _use_link_symbol {
-        _link_symbol
-      }
+  [
+    #link(_url)[
+      #text(_link_color)[
+        *#_content*
+        #emph(_subcontent)
+        #if _use_link_symbol {
+          _link_symbol
+        }
+      ]
     ]
   ]
   _date(_time)
