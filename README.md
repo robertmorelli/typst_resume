@@ -1,4 +1,3 @@
 # Typst Resume
 
-typst is not ready to make websites\
-...thats ok
+repo for making my typst resume have a website... sorta
