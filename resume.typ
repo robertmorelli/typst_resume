@@ -1,4 +1,4 @@
-#set page(margin: (top: 1cm, bottom: 1cm, left: 1cm, right: 1cm))
+
 
 #let _navy_blue = rgb("#001f8f")
 
@@ -12,18 +12,57 @@
 #let _centered_header = false
 #let _no_links = false
 #let _base_font_size = 8.1pt
-#let _density = 0.6
+#let _density = 0.8
 #let _diff = 1.15
-#let _link_color = _navy_blue
-#let _block_title_color = black
 #let _use_link_symbol = true
 #let _use_link_symbol_for_header = false
 #let _block_body_indentation = 2
+#let _dark_mode = true
+
+#let _black = rgb("#151515")
+#let _darkmode_white = rgb("#eee")
 
 
+
+#let _link_color = if _dark_mode {
+  rgb("#aee")
+} else {
+  _navy_blue
+}
+
+#let _block_title_color = if _dark_mode {
+  _darkmode_white
+} else {
+  _black
+}
+#let _page_background = if _dark_mode {
+  _black
+} else {
+  white
+}
+
+#let _text_color = if _dark_mode {
+  _darkmode_white
+} else {
+  _black
+}
+
+#set page(
+  margin: (
+    top: 1cm,
+    bottom: 1cm,
+    left: 1cm,
+    right: 1cm
+  ),
+  fill: _page_background
+)
 
 #let _link_symbol = "↗" //"🔗"
-#set text(font: "DejaVu Sans", _base_font_size)
+#set text(
+  _text_color,
+  font: "DejaVu Sans",
+  _base_font_size,
+)
 #set par(
   leading: _base_font_size * _density,
   spacing: _base_font_size * _density
@@ -69,7 +108,7 @@
 }
 
 //ITEMS
-#let _item__bullets(_title, _contents) = {
+#let _item_bullets(_title, _contents) = {
   if _bullets and _big_bullets {
     list(
       text(
@@ -103,7 +142,7 @@
 
 #let _item(_title, _contents) = {
   if _bullets {
-    _item__bullets(_title, _contents)
+    _item_bullets(_title, _contents)
   } else {
     _item_no_bullets(_title, _contents)
   }
@@ -121,15 +160,16 @@
         _title,
       )
     ),
-    [
-      #_items.join(_join)
-    ]
+    block(
+      inset: (top: _block_body_indentation/ 2 * _base_font_size),
+      _items.join(_join)
+    )
   )
 }
 
 #let _block_top_title(_title, _items, _join) = {
   if _lines and _line_above {
-    line(length: 100%, stroke: 0.5pt)
+    line(length: 100%, stroke: 0.5pt + _text_color)
   }
   smallcaps(
     text(
@@ -141,7 +181,7 @@
   )
   if _lines {
     if not _line_above {
-      line(length: 100%, stroke: 0.5pt)
+      line(length: 100%, stroke: 0.5pt + _text_color)
     }
   } else {
     v(_base_font_size * _density)
@@ -164,7 +204,7 @@
 
 #let _all_blocks_no_lines(_blocks) = {
   if _blocks.len() != 0 and _top_line and not _line_above {
-    line(length: 100%, stroke: 1pt)
+    line(length: 100%, stroke: 1pt + _text_color)
   }
   if _blocks.len() != 0 and _left_titles {v(_base_font_size * _density)}
   if _left_titles {
@@ -174,12 +214,12 @@
   }
 }
 
-#let _all_blocks__lines(_blocks) = {
+#let _all_blocks_lines(_blocks) = {
   if _blocks.len() != 0 and _top_line and not _line_above  {
-    line(length: 100%, stroke: 1pt)
+    line(length: 100%, stroke: 1pt + _text_color)
   }
   if _left_titles {
-    _blocks.join(line(length: 100%, stroke: 0.2pt))
+    _blocks.join(line(length: 100%, stroke: 0.2pt + _text_color))
   } else {
     _blocks.join(v(_base_font_size * _density))
   }
@@ -237,7 +277,7 @@
   }
   
   if _lines {
-    _all_blocks__lines(_blocks) 
+    _all_blocks_lines(_blocks) 
   } else {
     _all_blocks_no_lines(_blocks) 
   }
