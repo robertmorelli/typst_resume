@@ -1,14 +1,35 @@
-#set page(margin: (top: 0.5cm, bottom: 2cm, left: 0.5cm, right: 1cm))
-#set text(font: "DejaVu Sans", 7.8pt)
+#set page(margin: (top: 1cm, bottom: 1cm, left: 1cm, right: 1cm))
+
+#let _navy_blue = rgb("#001f8f")
 
 #let big_bullets = false
 #let bullets = true
-#let lines = false
+#let lines = true
+#let top_line = false
 #let left_titles = false
 #let date_parens = false
+#let _base_font_size = 8.1pt
+#let _density = 0.8
+#let _diff = 1.15
+#let _link_color = _navy_blue
+#let _block_title_color = black
+#let _use_link_symbol = true
+#let _use_link_symbol_for_header = false
+#let _block_body_indentation = 2
+
+
+
+#let _link_symbol = "↗" //"🔗"
+#set text(font: "DejaVu Sans", _base_font_size)
+#set par(
+  leading: _base_font_size * _density,
+  spacing: _base_font_size * _density
+)
+#let _item_font_size = _base_font_size * _diff
+#let _block_header_font_size = _item_font_size * _diff
 
 #let _date(_content) = {
-  if date_parens {
+  if date_parens and _content != [] {
     [~(#_content)]
   } else {
     h(1fr)
@@ -17,35 +38,42 @@
 }
 
 #let _link(_content, _subcontent, _url, _time) = {
-  if date_parens {
-    link(_url)[#text(blue)[*#_content* _#_subcontent _]~]
-  } else {
-    link(_url)[#text(blue)[*#_content* #_subcontent]~]
-  }
+  link(_url,
+    text(_link_color)[
+      *#_content*
+      #emph(_subcontent)
+      #if _use_link_symbol {
+        _link_symbol
+      }
+    ]
+  )
   _date(_time)
 }
 
 #let _nolink(_content, _subcontent, _time) = {
-  if date_parens {
-    [*#_content* _#_subcontent _]
-  } else {
-    [*#_content* #_subcontent]
-  }
+  [*#_content* #emph(_subcontent)]
   _date(_time)
 }
 
 //ITEMS
-
 #let _item_bullets(_title, _contents) = {
   if bullets and big_bullets {
-    list(_title, indent: 0pt)
+    list(
+      text(
+        size: _item_font_size,
+        _title
+      ),
+      indent: 0pt,
+    )
   } else {
-    _title
+    text(size: _item_font_size, _title)
   }
   for _one_subitem in _contents {
-    list(_one_subitem, indent: 10pt)
+    list(_one_subitem, indent: _base_font_size)
   }
-  if _contents.len() == 0 and not big_bullets [\ ]
+  if _contents.len() == 0 and not big_bullets {
+    v(0pt)
+  }
 }
 
 #let _subitem_nobullets(_content) = {
@@ -53,13 +81,11 @@
 }
 
 #let _item_nobullets(_title, _contents) = {
-  [
-    #_title
-  ]
+  text(size: _item_font_size, _title)
   if _contents.len() != 0 {
-    [\ ]
+    v(0pt)
   }
-  _contents.map(_subitem_nobullets).join([\ ])
+  _contents.map(_subitem_nobullets).join(v(0pt))
 }
 
 #let _item(_title, _contents) = {
@@ -73,65 +99,86 @@
 //BLOCK
 
 #let _block_left_title(_title, _items, _join) = {
-  grid(columns: (1fr, 7fr),
-    smallcaps[
-      == #_title
-    ],
+  grid(columns: (1fr, 6fr),
+    smallcaps(
+      text(
+        _block_title_color,
+        size: _block_header_font_size,
+        weight: "bold",
+        _title,
+      )
+    ),
     [
-      #set par(justify: true)
-      #set enum(spacing: 12pt)
       #_items.join(_join)
     ]
   )
 }
 
-#let _block_top_title(_title, _items, _join) = [
-  = #smallcaps[#_title]\
-  #set par(justify: true)
-  #set enum(spacing: 12pt)
-  #line(length: 100%, stroke: 0.5pt)
-  #_items.join(_join)
-]
-
-#let _block_joined(_title, _items, _join) = {
-  if left_titles {
-    _block_left_title(_title, _items, _join)
+#let _block_top_title(_title, _items, _join) = {
+  smallcaps(
+    text(
+      _block_title_color,
+      size: _block_header_font_size,
+      weight: "bold",
+      _title,
+    )
+  )
+  if lines {
+    line(length: 100%, stroke: 0.5pt)
   } else {
-    _block_top_title(_title, _items, _join)
+    v(_base_font_size * _density)
   }
+  block(
+      inset: (left: _block_body_indentation * _base_font_size),
+      _items.join(_join)
+  )
 }
 
 #let _block(_title, _items) = {
-  if bullets {
-    _block_joined(_title, _items, [])
+  if left_titles {
+    _block_left_title(_title, _items, v(0pt))
   } else {
-    _block_joined(_title, _items, [\ ])
+    _block_top_title(_title, _items, v(0pt))
   }
 }
 
 //RESUME
 
 #let _all_blocks_nolines(_blocks) = {
-  if _blocks.len() != 0 and left_titles [\ ]
+  if _blocks.len() != 0 and top_line {
+    line(length: 100%, stroke: 1pt)
+  }
+  if _blocks.len() != 0 and left_titles {v(_base_font_size * _density)}
   if left_titles {
-    _blocks.join([\ ])
+      _blocks.join(v(_base_font_size * _density))
   } else {
-    _blocks.join([])
+    _blocks.join(v(_base_font_size / _density))
   }
 }
 
 #let _all_blocks_lines(_blocks) = {
-  if _blocks.len() != 0 {
+  if _blocks.len() != 0 and top_line {
     line(length: 100%, stroke: 1pt)
   }
-  _blocks.join(line(length: 100%, stroke: 0.2pt))
+  if left_titles {
+    _blocks.join(line(length: 100%, stroke: 0.2pt))
+  } else {
+    _blocks.join(v(_base_font_size / _density))
+  }
 }
 
 #let _resume(_name, _ghlink, _email, _phone, _blocks) = {  
   grid(columns: (1fr, 1fr),
     smallcaps[#text(size: 32pt)[*#_name*]],
     smallcaps[
-      #h(1fr) #link("https://github.com/" + _ghlink)[#text(blue)[*github.com/#_ghlink *]]\
+      #h(1fr) #link("https://github.com/" + _ghlink)[
+        #text(_link_color)[
+          *github.com/#_ghlink*
+          #if _use_link_symbol_for_header {
+            _link_symbol
+          }
+        ]
+      ]\
       #h(1fr) #_phone\
       #h(1fr) #_email
     ]
@@ -162,7 +209,7 @@
         _item(
           _nolink(
             [A.S. Computer Science (incomplete)],
-            [SLCC],
+            [Salt Lake Community College],
             [2019 - 2022 _transferred_]
           ),
           ()
@@ -173,32 +220,32 @@
       (
         _item(
           _nolink(
-            [Comfortable Languages],
+            [Expert],
             [],
             []
           ),
           (
-            [Python, C,  Zig, Dart, JS, TS, WASM (WAT), Java, C\#],
+            [Zig, Dart, JS, WASM (WAT), CSS, SVG, GitHub Actions, MIPS asm],
           )
         ),
         _item(
           _nolink(
-            [Familiar Languages],
+            [Proficient],
             [],
             []
           ),
           (
-            [Ruby, C++, Rust, Swift, Metal, OpenCL, Typst, F\#, x86 assembly, MIPS assembly, PHP, Bash],
+            [Angular, C, C\#, Cordova, Flutter, HTML, Java, Python, TS, Typst],
           )
         ),
         _item(
           _nolink(
-            [Misc],
+            [Familiar],
             [],
             []
           ),
           (
-            [Flutter, Angular, Laravel, cicd/github actions/circleCi, css, html/svg, mongoDB, Cordova],
+            [Bash, C++, CICD, CircleCi, Laravel, Metal, MongoDB,  OpenCL, PHP, Ruby, Rust, Swift],
           )
         ),
       )
@@ -244,7 +291,7 @@
           ),
           (
             [Overhauled LDS MTC QA/CICD workflow, substantially reducing regression burden],
-            [Rewrote Embark app startup to reduce first time loading by up to 50% for users with poor internet]
+            [Rewrote Embark app startup to reduce first time loading by up to 50%]
           )
         ),
         _item(
