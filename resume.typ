@@ -2,14 +2,17 @@
 
 #let _navy_blue = rgb("#001f8f")
 
-#let big_bullets = false
-#let bullets = true
-#let lines = true
-#let top_line = false
-#let left_titles = false
-#let date_parens = false
+#let _big_bullets = false
+#let _bullets = true
+#let _lines = true
+#let _top_line = false
+#let _left_titles = false
+#let _date_parens = false
+#let _line_above = true
+#let _centered_header = false
+#let _no_links = false
 #let _base_font_size = 8.1pt
-#let _density = 0.8
+#let _density = 0.6
 #let _diff = 1.15
 #let _link_color = _navy_blue
 #let _block_title_color = black
@@ -29,7 +32,7 @@
 #let _block_header_font_size = _item_font_size * _diff
 
 #let _date(_content) = {
-  if date_parens and _content != [] {
+  if _date_parens and _content != [] {
     [~(#_content)]
   } else {
     h(1fr)
@@ -37,7 +40,7 @@
   }
 }
 
-#let _link(_content, _subcontent, _url, _time) = {
+#let _true_link(_content, _subcontent, _url, _time) = {
   [
     #link(_url)[
       #text(_link_color)[
@@ -57,9 +60,17 @@
   _date(_time)
 }
 
+#let _link(_content, _subcontent, _url, _time) = {
+  if _no_links {
+    _nolink(_content, _subcontent, _time)
+  } else {
+    _true_link(_content, _subcontent, _url, _time)
+  }
+}
+
 //ITEMS
-#let _item_bullets(_title, _contents) = {
-  if bullets and big_bullets {
+#let _item__bullets(_title, _contents) = {
+  if _bullets and _big_bullets {
     list(
       text(
         size: _item_font_size,
@@ -73,28 +84,28 @@
   for _one_subitem in _contents {
     list(_one_subitem, indent: _base_font_size)
   }
-  if _contents.len() == 0 and not big_bullets {
+  if _contents.len() == 0 and not _big_bullets {
     v(0pt)
   }
 }
 
-#let _subitem_nobullets(_content) = {
+#let _subitem_no_bullets(_content) = {
   [#h(10pt) #_content]
 }
 
-#let _item_nobullets(_title, _contents) = {
+#let _item_no_bullets(_title, _contents) = {
   text(size: _item_font_size, _title)
   if _contents.len() != 0 {
     v(0pt)
   }
-  _contents.map(_subitem_nobullets).join(v(0pt))
+  _contents.map(_subitem_no_bullets).join(v(0pt))
 }
 
 #let _item(_title, _contents) = {
-  if bullets {
-    _item_bullets(_title, _contents)
+  if _bullets {
+    _item__bullets(_title, _contents)
   } else {
-    _item_nobullets(_title, _contents)
+    _item_no_bullets(_title, _contents)
   }
 }
 
@@ -117,6 +128,9 @@
 }
 
 #let _block_top_title(_title, _items, _join) = {
+  if _lines and _line_above {
+    line(length: 100%, stroke: 0.5pt)
+  }
   smallcaps(
     text(
       _block_title_color,
@@ -125,8 +139,10 @@
       _title,
     )
   )
-  if lines {
-    line(length: 100%, stroke: 0.5pt)
+  if _lines {
+    if not _line_above {
+      line(length: 100%, stroke: 0.5pt)
+    }
   } else {
     v(_base_font_size * _density)
   }
@@ -137,7 +153,7 @@
 }
 
 #let _block(_title, _items) = {
-  if left_titles {
+  if _left_titles {
     _block_left_title(_title, _items, v(0pt))
   } else {
     _block_top_title(_title, _items, v(0pt))
@@ -146,49 +162,84 @@
 
 //RESUME
 
-#let _all_blocks_nolines(_blocks) = {
-  if _blocks.len() != 0 and top_line {
+#let _all_blocks_no_lines(_blocks) = {
+  if _blocks.len() != 0 and _top_line and not _line_above {
     line(length: 100%, stroke: 1pt)
   }
-  if _blocks.len() != 0 and left_titles {v(_base_font_size * _density)}
-  if left_titles {
+  if _blocks.len() != 0 and _left_titles {v(_base_font_size * _density)}
+  if _left_titles {
       _blocks.join(v(_base_font_size * _density))
   } else {
-    _blocks.join(v(_base_font_size / _density))
+    _blocks.join(v(_base_font_size * _density))
   }
 }
 
-#let _all_blocks_lines(_blocks) = {
-  if _blocks.len() != 0 and top_line {
+#let _all_blocks__lines(_blocks) = {
+  if _blocks.len() != 0 and _top_line and not _line_above  {
     line(length: 100%, stroke: 1pt)
   }
-  if left_titles {
+  if _left_titles {
     _blocks.join(line(length: 100%, stroke: 0.2pt))
   } else {
-    _blocks.join(v(_base_font_size / _density))
+    _blocks.join(v(_base_font_size * _density))
+  }
+}
+
+#let _true_header_link(_ghlink) = {
+  link("https://github.com/" + _ghlink)[
+    #text(_link_color)[
+      *github.com/#_ghlink*
+      #if _use_link_symbol_for_header {
+        _link_symbol
+      }
+    ]
+  ]
+}
+
+#let _no_header_link(_ghlink) = {
+  link("https://github.com/" + _ghlink)[
+    *github.com/#_ghlink*
+    #if _use_link_symbol_for_header {
+      _link_symbol
+    }
+  ]
+}
+
+#let _header_link(_ghlink) = {
+  if _no_links {
+    _no_header_link(_ghlink)
+  } else {
+    _true_header_link(_ghlink)
   }
 }
 
 #let _resume(_name, _ghlink, _email, _phone, _blocks) = {  
-  grid(columns: (1fr, 1fr),
-    smallcaps[#text(size: 32pt)[*#_name*]],
-    smallcaps[
-      #h(1fr) #link("https://github.com/" + _ghlink)[
-        #text(_link_color)[
-          *github.com/#_ghlink*
-          #if _use_link_symbol_for_header {
-            _link_symbol
-          }
-        ]
-      ]\
-      #h(1fr) #_phone\
-      #h(1fr) #_email
+  if _centered_header {
+    align(center)[#smallcaps[#text(size: 18pt)[*#_name*]]]
+    columns(3)[
+      #align(left)[#_email]
+      #colbreak()
+      #align(center)[
+        #_header_link(_ghlink)
+      ]
+      #colbreak()
+      #align(right)[#_phone]
     ]
-  )
-  if lines {
-    _all_blocks_lines(_blocks) 
   } else {
-    _all_blocks_nolines(_blocks) 
+    grid(columns: (1fr, 1fr),
+      smallcaps[#text(size: 32pt)[*#_name*]],
+      smallcaps[
+        #h(1fr) #_header_link(_ghlink)\
+        #h(1fr) #_phone\
+        #h(1fr) #_email
+      ]
+    )
+  }
+  
+  if _lines {
+    _all_blocks__lines(_blocks) 
+  } else {
+    _all_blocks_no_lines(_blocks) 
   }
 }
 
