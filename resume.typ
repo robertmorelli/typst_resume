@@ -275,7 +275,7 @@
           _link(
             [Optimized bead/gravity sort],
             [zig],
-            "https://github.com/robertmorelli/bead-sort-u5x32"
+            "https://github.com/robertmorelli/bead_sort_u5x32"
             ,[2026]
           ),
           (
@@ -308,7 +308,7 @@
           _link(
             [Automated resume],
             [typst],
-            "https://robertmorelli.github.io/typst-resume/",
+            "https://robertmorelli.github.io/typst_resume/",
             [2025]
           ),
           (
@@ -319,7 +319,7 @@
           _link(
             [Held-karp],
             [zig],
-            "https://github.com/robertmorelli/held-karp",
+            "https://github.com/robertmorelli/held_karp",
             [2025]
           ),
           (
@@ -330,7 +330,7 @@
           _link(
             [Spreadsheet formulas to DLL compiler],
             [c],
-            "https://github.com/robertmorelli/dll-compiler",
+            "https://github.com/robertmorelli/dll_compiler",
             [2025]
           ),
           (
@@ -341,7 +341,7 @@
           _link(
             [Color alchemy],
             [qt c++],
-            "https://robertmorelli.github.io/color-alchemy/",
+            "https://robertmorelli.github.io/color_alchemy/",
             [2024]
           ),
           (
@@ -352,7 +352,7 @@
           _link(
             [CSS grid examples],
             [css html],
-            "https://robertmorelli.github.io/grid-examples/",
+            "https://robertmorelli.github.io/grid_examples/",
             [2024]
           ),
           (
@@ -363,7 +363,7 @@
           _link(
             [Randomized Pacman game],
             [java],
-            "https://github.com/robertmorelli/randomized-pacman",
+            "https://github.com/robertmorelli/randomized_pacman",
             [2021]
           ),
           (
