@@ -153,7 +153,7 @@
       (
         _item(
           _nolink(
-            [B.S. Computer Science],
+            [B.S. Computer Science (in progress)],
             [University of Utah],
             [2022 - 2027 _expected_]
           ),
