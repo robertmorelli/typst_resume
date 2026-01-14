@@ -3,7 +3,7 @@
 #let _navy_blue = rgb("#001f8f")
 
 #let _big_bullets = false
-#let _bullets = true
+#let _bullets = false
 #let _lines = true
 #let _top_line = false
 #let _left_titles = false
@@ -13,10 +13,10 @@
 #let _no_links = false
 #let _base_font_size = 8.1pt
 #let _density = 0.8
-#let _diff = 1.15
+#let _diff = 1.2
 #let _use_link_symbol = true
 #let _use_link_symbol_for_header = false
-#let _block_body_indentation = 2
+#let _block_body_indentation = 3
 #let _dark_mode = true
 
 #let _black = rgb("#151515")
@@ -25,7 +25,7 @@
 
 
 #let _link_color = if _dark_mode {
-  rgb("#aee")
+  rgb("#eae")
 } else {
   _navy_blue
 }
