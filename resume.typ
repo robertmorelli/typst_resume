@@ -22,7 +22,7 @@
 #let _right_aligned_italic = true
 #let _subtitle_seperator = "▪"//▒ ► ● | → ❯i ▪⑇⑊ ◆
 #let _link_symbol = "↗" //"🔗" ↗
-#let _frills = true
+#let _frills = false
 
 #let _black = rgb("#151515")
 #let _darkmode_white = rgb("#eee")
