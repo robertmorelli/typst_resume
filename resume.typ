@@ -13,15 +13,16 @@
 #let _density = 1.38
 #let _diff = 1.2
 #let _use_link_symbol = true
-#let _use_link_symbol_for_header = false
+#let _use_link_symbol_for_header = true
 #let _block_body_indentation = 0
-#let _dark_mode = true
+#let _dark_mode = false
 #let _subtitles_italic = false
 #let _subtitles_underlined = false
 #let _subtitles_seperated = true
 #let _right_aligned_italic = true
 #let _subtitle_seperator = "▪"//▒ ► ● | → ❯i ▪⑇⑊ ◆
 #let _link_symbol = "↗" //"🔗" ↗
+#let _frills = true
 
 #let _black = rgb("#151515")
 #let _darkmode_white = rgb("#eee")
@@ -31,7 +32,8 @@
 #let _link_color = if _dark_mode {
   rgb("#eae")
 } else {
-  _navy_blue
+  // _navy_blue
+  rgb("#0bb")
 }
 
 #let _block_title_color = if _dark_mode {
@@ -58,8 +60,64 @@
     left: 1cm,
     right: 1cm
   ),
-  fill: _page_background
+  fill: _page_background,
+  background:
+    if _frills {
+      rect(
+        fill: tiling(
+          size: (10pt, 10pt),
+          text(
+            _link_color.transparentize(
+              if _dark_mode {
+                99.8%
+              } else {
+                98%
+              }
+            ),
+            size: 20pt,
+          )[░]
+        ),
+        width: 100%,
+        height: 100%
+      )
+    } else {
+    }
 )
+#let _double_offset = 0.005em
+#let _shadow_text(_text) = {
+  if _frills {
+    block[
+      #place(top + left, block(inset: (left: _double_offset, top: _double_offset))[
+        #text(
+          // _text_color
+          //   .mix(_link_color)
+          //   .mix(_link_color)
+          //   .mix(_link_color)
+          //   .transparentize(10%)
+          rgb("#F0F")
+            )[
+              #_text
+            ]
+      ])
+      #place(top + left, block(inset: (left: -_double_offset, top: -_double_offset))[
+        #text(
+          // _text_color
+            // .mix(_link_color)
+            // .mix(_link_color)
+            // .mix(_link_color)
+            // .transparentize(10%)
+            // red
+            rgb("#0F0")
+            )[
+              #_text
+            ]
+      ])
+      #place(top + left, text(_text_color)[#_text])
+    ]
+  } else {
+    _text
+  }
+}
 
 #set text(
   _text_color,
@@ -116,12 +174,12 @@
 }
 
 #let _nolink(_content, _subcontent, _time) = {
-  [
+  _shadow_text([
     *#_content*
     // #h(_base_font_size / 2)
     #_subtitles(_subcontent)
-  ]
-  _date(_time)
+    #_date(_time)
+  ])
 }
 
 #let _link(_content, _subcontent, _url, _time) = {
@@ -154,7 +212,7 @@
 }
 
 #let _subitem_no_bullets(_content) = {
-  [#h(10pt) #_content]
+  block(inset: (left: _base_font_size), width: 80%)[#_content]
 }
 
 #let _item_no_bullets(_title, _contents) = {
@@ -177,12 +235,14 @@
 
 #let _block_left_title(_title, _items, _join) = {
   grid(columns: (1fr, 6fr),
-    smallcaps(
-      text(
-        _block_title_color,
-        size: _block_header_font_size,
-        weight: "black",
-        _title,
+    _shadow_text(
+      smallcaps(
+        text(
+          // _block_title_color,
+          size: _block_header_font_size,
+          weight: "black",
+          _title,
+        )
       )
     ),
     block(
@@ -196,12 +256,14 @@
   if _lines and _line_above {
     line(length: 100%, stroke: 0.5pt + _text_color)
   }
-  smallcaps(
-    text(
-      _block_title_color,
-      size: _block_header_font_size,
-      weight: "black",
-      _title,
+  _shadow_text(
+    smallcaps(
+      text(
+        // _block_title_color,
+        size: _block_header_font_size,
+        weight: "black",
+        _title,
+      )
     )
   )
   if _lines {
@@ -302,7 +364,9 @@
     ]
   } else {
     grid(columns: (1fr, 1fr),
-      smallcaps[#text(size: 30pt)[*#_name*]],
+      smallcaps[
+        #_shadow_text(text(size: 30pt)[*#_name*])
+      ],
       smallcaps[
         #if _no_links [
           #h(1fr) *#smallcaps[robertmorelli.github.io/resume]*\
@@ -331,34 +395,16 @@
       (
         _item(
           _nolink(
-            [B.S. Computer Science (in progress)],
+            [B.S. Computer Science],
             [University of Utah],
-            [2022 - 2027 expected]
-          ),
-          ()
-        ),
-        _item(
-          _nolink(
-            [A.S. Computer Science (incomplete)],
-            [SLCC],
-            [2019 - 2022 transferred]
+            [expected 2027]
           ),
           ()
         ),
       )
     ),
-    _block([Technology],
+    _block([Skills],
       (
-        _item(
-          _nolink(
-            [Expert],
-            [],
-            []
-          ),
-          (
-            [Zig, Dart, JS, WASM (WAT), CSS, SVG, GitHub Actions, MIPS asm],
-          )
-        ),
         _item(
           _nolink(
             [Proficient],
@@ -366,7 +412,7 @@
             []
           ),
           (
-            [Angular, C, C\#, Cordova, Flutter, HTML, Java, Python, TS, Typst],
+            [Dart, JS,  CSS, SVG, HTML, Java, Python, TS, Typst, GitHub Actions, Zig],
           )
         ),
         _item(
@@ -376,7 +422,7 @@
             []
           ),
           (
-            [Bash, C++, CICD, CircleCi, Metal, MongoDB,  OpenCL, PHP, Ruby, Rust, Swift],
+            [Angular, Bash, C, C\#, Cordova, C++, CICD, CircleCi, Flutter, Metal, MongoDB, MIPS asm, OpenCL, PHP, Ruby, Rust, Swift, WASM (WAT)],
           )
         ),
       )
@@ -387,7 +433,7 @@
           _nolink(
             [Research Assistant],
             [University of Utah],
-            [Nov 2025 - present]
+            [2025-]
           ),
           (
             [Benchmarking gradual typing in Meta's Cinder variant of python],
@@ -397,7 +443,7 @@
           _nolink(
             [Teaching Assistant],
             [University of Utah],
-            [Sep 2025 - present]
+            [2025-]
           ),
           (
             [Leading labs, grading, assisting students for COMP 1020],
@@ -407,10 +453,10 @@
           _nolink(
             [Software Engineer/Dev ops],
             [Stutor Inc.],
-            [Sep 2023 - Apr 2024]
+            [2023-2024]
           ),
           (
-            [Architected CICD pipeline],
+            [Architected automation pipeline],
             [Optimized DB indexes, reducing query times by up to 8x],
           )
         ),
@@ -418,7 +464,7 @@
           _nolink(
             [Web Developer/Dev Ops],
             [Jerran Software Solutions],
-            [Apr 2022 - Sep 2023]
+            [2022-2023]
           ),
           (
             [Overhauled LDS MTC QA/CICD workflow, substantially reducing regression burden],
@@ -429,7 +475,7 @@
           _nolink(
             [Research Assistant Intern],
             [Earl Keefe PhD],
-            [Nov 2020 - Jun 2021]
+            [2020-2021]
           ),
           (
             [Visualizations for anthropology research],
@@ -439,7 +485,7 @@
           _nolink(
             [Web Dev. Intern],
             [Frelii],
-            [May 2019 - Sep 2019]
+            [2019]
           ),
           (
             [Web scraping SNPedia for AI training],
@@ -457,7 +503,7 @@
             ,[2026]
           ),
           (
-            [Bead sort done via popcount intrinsics and bit matrix transpositions. Only for 32 u5s],
+            [Bead sort via popcount intrinsics and bit matrix transpositions for 32 u5s],
           )
         ),
         _item(
@@ -468,7 +514,7 @@
             [2025]
           ),
           (
-            [Ported as OS class assignment to zig and then added keyboard input and vga output],
+            [Ported as OS class assignment to zig, demo of keyboard in and vga out],
           )
         ),
         _item(
@@ -501,7 +547,7 @@
             [2025]
           ),
           (
-            [Well optimized bitset based Held-karp TSP algorithm],
+            [Well optimized Held-karp TSP algorithm using bitsets and Gosper's hack],
           )
         ),
         _item(
@@ -512,7 +558,7 @@
             [2025]
           ),
           (
-            [A spreadsheet which compiles formulas to a DLL which can be used in DOTNET projects],
+            [Compiles formulas in a spreadsheet into a DLL],
           )
         ),
         _item(
@@ -523,7 +569,7 @@
             [2024]
           ),
           (
-            [A game for learning color mixing],
+            [Beautiful game for learning color mixing, properly using oklab color space],
           )
         ),
         _item(
@@ -534,7 +580,7 @@
             [2024]
           ),
           (
-            [Examples of common design patterns implemented with css grid as a good reference],
+            [Reference for common design patterns that should be implemented with css grid],
           )
         ),
         _item(
@@ -555,7 +601,7 @@
         
         _item(
           _link(
-            [Added code field to instruction decoder],
+            [Contributed code field to instruction decoding],
             [MARS IDE],
             "https://github.com/dpetersanderson/MARS",
             [2025]
@@ -582,13 +628,13 @@
               [Number Cross 5],
               [],
               "https://www.janestreet.com/puzzles/number-cross-5-solution/",
-              [May 2025]
+              []
             ),
             _link(
               [Sum One, Somewhere],
               [],
               "https://www.janestreet.com/puzzles/sum-one-somewhere-solution/",
-              [Apr 2025]
+              []
             ),
           )
         ),
