@@ -12,7 +12,7 @@
 #let _base_font_size = 7.3pt
 #let _density = 1.38
 #let _diff = 1.2
-#let _use_link_symbol = false
+#let _use_link_symbol = true
 #let _use_link_symbol_for_header = false
 #let _block_body_indentation = 0
 #let _dark_mode = true
@@ -21,6 +21,7 @@
 #let _subtitles_seperated = true
 #let _right_aligned_italic = true
 #let _subtitle_seperator = "▪"//▒ ► ● | → ❯i ▪⑇⑊ ◆
+#let _link_symbol = "🔗" //"🔗" ↗
 
 #let _black = rgb("#151515")
 #let _darkmode_white = rgb("#eee")
@@ -60,7 +61,6 @@
   fill: _page_background
 )
 
-#let _link_symbol = "↗" //"🔗"
 #set text(
   _text_color,
   font: "Cartograph CF",
