@@ -593,8 +593,7 @@
           (
             [Pacman game using some algorithms from my 2420 class: A\*, DFS, BFS, Union find],
           )
-        )
-      ),
+        ),
         _item(
           _link(
             [Svg Animator],
