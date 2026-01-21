@@ -595,6 +595,18 @@
           )
         )
       ),
+        _item(
+          _link(
+            [Svg Animator],
+            [html js css],
+            "https://robertmorelli.github.io/svg_animator/",
+            [2019]
+          ),
+          (
+            [Svg animator inspired by ms paint],
+          )
+        )
+      ),
     ),
     _block([Misc],
       (
