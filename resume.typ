@@ -483,7 +483,7 @@
         ),
         _item(
           _nolink(
-            [Web Dev. Intern],
+            [Web Development Intern],
             [Frelii],
             [may 2019 - sep 2019]
           ),
