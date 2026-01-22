@@ -497,6 +497,17 @@
       (
         _item(
           _link(
+            [Beta reduction visualizer],
+            [js html],
+            "https://robertmorelli.github.io/beta_reduction_visualizer"
+            ,[2026]
+          ),
+          (
+            [Visualizer for lambda calculus beta reduction which traces arguments as they are distributed],
+          )
+        ),
+        _item(
+          _link(
             [Optimized bead/gravity sort],
             [zig],
             "https://github.com/robertmorelli/bead_sort_u5x32"
