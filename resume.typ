@@ -10,7 +10,7 @@
 #let _centered_header = false
 #let _no_links = false
 #let _base_font_size = 7.2pt
-#let _density = 1.35
+#let _density = 1.25
 #let _diff = 1.2
 #let _use_link_symbol = true
 #let _use_link_symbol_for_header = true
@@ -18,11 +18,12 @@
 #let _dark_mode = true
 #let _subtitles_italic = false
 #let _subtitles_underlined = false
-#let _subtitles_seperated = true
+#let _subtitles_separated = true
 #let _right_aligned_italic = true
-#let _subtitle_seperator = "▪"//▒ ► ● | → ❯i ▪⑇⑊ ◆
+#let _subtitle_separator = "▪"//▒ ► ● | → ❯i ▪⑇⑊ ◆
 #let _link_symbol = "↗" //"🔗" ↗
 #let _frills = false
+#let _hide_dates = true
 
 #let _black = rgb("#151515")
 #let _darkmode_white = rgb("#eee")
@@ -150,8 +151,8 @@
     #emph(_subcontent)
   ] else if _subtitles_underlined [
     #underline(_subcontent)
-  ] else if _subtitles_seperated and _subcontent != [] [
-    #_subtitle_seperator #_subcontent
+  ] else if _subtitles_separated and _subcontent != [] [
+    #_subtitle_separator #_subcontent
   ] else [
     #_subcontent
   ]
@@ -287,6 +288,20 @@
   }
 }
 
+#let _grid_item(_title, _url) = {}
+#let _grid_link(_title, _url) = {}
+
+#let _grid_left_title(_title, _items, _join, _cols) = {}
+#let _grid_top_title(_title, _items, _join, _cols) = {}
+
+#let _grid(_title, _grid_items, _cols) = {
+  if _left_titles {
+    _grid_left_title(_title, _items, v(0pt))
+  } else {
+    _grid_top_title(_title, _items, v(0pt))
+  }
+}
+
 //RESUME
 
 #let _all_blocks_no_lines(_blocks) = {
@@ -352,7 +367,6 @@
     ]
     columns(3)[
       #align(left)[
-        
         #_email
       ]
       #colbreak()
@@ -412,7 +426,7 @@
             []
           ),
           (
-            [Dart, JS,  CSS, SVG, HTML, Java, Python, TS, Typst, GitHub Actions, Zig],
+            [Dart, JS, CSS, SVG, HTML, Java, Python, TS, Typst, GitHub Actions, Zig],
           )
         ),
         _item(
@@ -422,7 +436,7 @@
             []
           ),
           (
-            [Angular, Bash, C, C\#, Cordova, C++, CICD, CircleCi, Flutter, Metal, MongoDB, MIPS asm, OpenCL, PHP, Ruby, Rust, Swift, WASM (WAT)],
+            [Angular, Bash, C, C\#, Cordova, C++, CI/CD, CircleCI, Flutter, Metal, MongoDB, MIPS ASM, OpenCL, PHP, Ruby, Rust, Swift, WASM (WAT)],
           )
         ),
       )
@@ -436,7 +450,7 @@
             [oct 2025 -]
           ),
           (
-            [Benchmarking gradual typing in Meta's Cinder variant of python],
+            [Benchmarking gradual typing in Meta's Cinder variant of Python],
           )
         ),
         _item(
@@ -446,12 +460,12 @@
             [sep 2025 -]
           ),
           (
-            [Leading labs, grading, assisting students for COMP 1020],
+            [Leading labs, grading, assisting students in COMP 1020],
           )
         ),
         _item(
           _nolink(
-            [Software Engineer/Dev ops],
+            [Software Engineer/DevOps],
             [Stutor Inc.],
             [sep 2023 - apr 2024]
           ),
@@ -462,13 +476,13 @@
         ),
         _item(
           _nolink(
-            [Web Developer/Dev Ops],
+            [Web Developer/DevOps],
             [Jerran Software Solutions],
             [apr 2022 - sep 2023]
           ),
           (
             [Overhauled LDS MTC QA/CICD workflow, substantially reducing regression burden],
-            [Rewrote Embark app startup to reduce first time loading by up to 50%]
+            [Rewrote Embark app startup to reduce first-time loading by up to 50%]
           )
         ),
         _item(
@@ -497,7 +511,29 @@
       (
         _item(
           _link(
-            [Beta reduction visualizer],
+            [English language trie],
+            [zig wasm],
+            "https://robertmorelli.github.io/english"
+            ,[2026]
+          ),
+          (
+            [Dictionary of 236k words embedded into a 4 MB wasm trie for easy autocomplete],
+          )
+        ),
+        _item(
+          _link(
+            [VS Code typst extension],
+            [rust ts],
+            "https://marketplace.visualstudio.com/items?itemName=robertmorelli.megamist-typst"
+            ,[2026]
+          ),
+          (
+            [Extension for typst development that works on the web version of VS Code],
+          )
+        ),
+        _item(
+          _link(
+            [Lambda calculus beta reduction visualizer],
             [js html],
             "https://robertmorelli.github.io/beta_reduction_visualizer"
             ,[2026]
@@ -514,7 +550,7 @@
             ,[2026]
           ),
           (
-            [Bead sort via popcount intrinsics and bit matrix transpositions for 32 u5s],
+            [Bead sort via popcount intrinsics and bit matrix transpositions for 32 u5 integers],
           )
         ),
         _item(
@@ -552,13 +588,13 @@
         ),
         _item(
           _link(
-            [Held-karp],
+            [Held-Karp],
             [zig],
             "https://github.com/robertmorelli/held_karp",
             [2025]
           ),
           (
-            [Well optimized Held-karp TSP algorithm using bitsets and Gosper's hack],
+            [Well optimized Held-Karp TSP algorithm using bitsets and Gosper's hack],
           )
         ),
         _item(
